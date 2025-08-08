@@ -2,47 +2,105 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin - Update Rekening</title>
+  <title>Update Rekening - CapitaLand</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 2rem; background: #f3f3f3; }
-    form { max-width: 400px; margin: auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    input, button { display: block; width: 100%; margin-top: 1rem; padding: 0.5rem; }
-    button { background-color: #0072bc; color: white; border: none; cursor: pointer; }
-    button:hover { background-color: #005a95; }
+    body {
+      font-family: sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1 {
+      color: #102e58;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #102e58;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 10px;
+      display: none;
+    }
+
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
   </style>
 </head>
 <body>
-  <h2 style="text-align: center;">Update Data Rekening</h2>
-  <form id="update-form">
-    <input type="text" name="name" placeholder="Nama Rekening" required />
-    <input type="text" name="bank" placeholder="Bank" required />
-    <input type="text" name="account" placeholder="Nomor Rekening" required />
-    <button type="submit">Update</button>
-  </form>
+  <h1>Update Data Rekening</h1>
+
+  <label>Nama Rekening</label>
+  <input id="name" placeholder="contoh: WIRI JIBRIL">
+
+  <label>Bank</label>
+  <input id="bank" placeholder="contoh: BRI">
+
+  <label>Nomor Rekening</label>
+  <input id="account" placeholder="contoh: 349401000020565">
+
+  <button onclick="updateData()">Update</button>
+
+  <div id="message" class="message"></div>
 
   <script>
-    const form = document.getElementById('update-form');
-    const endpoint = 'https://script.google.com/macros/s/AKfycbxb98I14uoAxAThYDXJwKMD8Y8aW-B8FROYlndmunR-mlmFrNjuqUqRBz8oliyz6hnt/exec';
+    const endpoint = 'https://script.google.com/macros/s/AKfycbzZuKD0eQZ_rpsUkKoJiGYZuFDwgQpYVVt0JvCWxC2AnNiDBkejzqqNvIQ22AfdDT-y/exec';
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const params = new URLSearchParams(formData).toString();
+    function updateData() {
+      const name = document.getElementById('name').value;
+      const bank = document.getElementById('bank').value;
+      const account = document.getElementById('account').value;
 
       fetch(endpoint, {
         method: 'POST',
-        body: params,
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `name=${encodeURIComponent(name)}&bank=${encodeURIComponent(bank)}&account=${encodeURIComponent(account)}`
       })
       .then(res => res.json())
       .then(data => {
-        alert('✅ Update berhasil!');
+        const msg = document.getElementById('message');
+        if (data.success) {
+          msg.className = 'message success';
+          msg.innerText = '✅ Data berhasil diperbarui!';
+        } else {
+          msg.className = 'message error';
+          msg.innerText = '❌ Gagal update: ' + data.message;
+        }
+        msg.style.display = 'block';
       })
-      .catch(error => {
-        alert('❌ Gagal update. Cek koneksi dan endpoint.');
+      .catch(err => {
+        const msg = document.getElementById('message');
+        msg.className = 'message error';
+        msg.innerText = '❌ Gagal update. Cek koneksi dan endpoint.';
+        msg.style.display = 'block';
       });
-    });
+    }
   </script>
 </body>
 </html>
