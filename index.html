@@ -84,7 +84,7 @@
       font-weight: 600;
     }
     input[type="text"] {
-      width: 100%;
+      width: calc(100% - 110px);
       padding: 10px;
       border-radius: 5px;
       border: 1px solid #102e58;
@@ -95,6 +95,16 @@
       font-weight: bold;
       background: #f2f2f2;
       box-sizing: border-box;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .input-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
     }
     ul, p {
       font-size: 14px;
@@ -124,8 +134,10 @@
 
   <div class="rekening-info">
     <strong>Jumlah Transfer (Rp):</strong>
-    <input type="text" id="amount" placeholder="Misal: 1500000" oninput="formatAmount(this)">
-    <button class="btn" onclick="copyText('amount')">Salin Jumlah Transfer</button>
+    <div class="input-wrapper">
+      <input type="text" id="amount" placeholder="Misal: 1500000" oninput="formatAmount(this)" onkeypress="return isNumberKey(event)">
+      <button class="btn" style="width: 100px; padding: 10px 0;" onclick="copyText('amount')">Salin</button>
+    </div>
     <div class="success" id="copy-amount-success">✅ Jumlah transfer berhasil disalin</div>
   </div>
 
@@ -169,6 +181,31 @@
     el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
   }
 
+  function isNumberKey(evt) {
+    const charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      evt.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
   // Ambil data dari URL jika ada
   const url = new URL(window.location.href);
-  c
+  const params = url.searchParams;
+  const name = params.get('name');
+  const number = params.get('number');
+  const amount = params.get('amount');
+
+  if (name) document.getElementById('name').innerText = name;
+  if (number) document.getElementById('number').innerText = number;
+  if (amount) {
+    const el = document.getElementById('amount');
+    // Format amount sesuai aturan
+    let val = amount.replace(/[^\d]/g, '');
+    el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
+  }
+</script>
+
+</body>
+</html>
