@@ -2,87 +2,111 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Transfer Pembayaran</title>
-  <link rel="icon" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png">
+  <link rel="icon" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" />
   <style>
     * {
       margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
     }
     body {
       background: url('https://www.capitaland.com/content/dam/capitalandinvestment/home-slider-videos/May2022/Slider_2_Mobile.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #102e58;
       padding-top: 80px;
+      min-height: 100vh;
     }
     header {
-      background-color: #ffffffee;
+      background-color: rgba(255, 255, 255, 0.95);
       position: fixed; top: 0; left: 0; width: 100%;
       z-index: 1000; padding: 10px 20px;
-      display: flex; justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex; justify-content: center; align-items: center;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
     }
-    header img { height: 40px; }
+    header img {
+      height: 40px;
+    }
     .container {
       max-width: 480px;
-      margin: 40px auto;
-      background: #ffffffcc;
-      padding: 20px; border-radius: 10px;
-      backdrop-filter: blur(5px);
+      margin: 40px auto 60px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgb(16 46 88 / 0.3);
+      color: #102e58;
     }
     .bank-logo {
       display: block; margin: 20px auto;
       width: 160px;
+      height: auto;
     }
     .rekening-info {
       text-align: center;
       margin-bottom: 20px;
     }
     .rekening-info strong {
-      display: block; font-size: 16px;
-      margin-top: 10px; color: #102e58;
+      display: block;
+      font-size: 16px;
+      margin-top: 10px;
     }
-    .rekening-number {
-      font-weight: bold; font-size: 20px;
-      margin: 10px 0;
+    #name, .rekening-number {
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 8px;
+      color: #102e58;
     }
     .btn {
       display: block; width: 100%;
-      padding: 10px; margin: 10px 0;
+      padding: 10px; margin: 12px 0;
       background-color: #102e58;
-      color: #fff; border: none;
-      border-radius: 5px; cursor: pointer;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
       font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      text-decoration: none;
     }
-    .btn:hover { background-color: #0d2344; }
+    .btn:hover {
+      background-color: #0d2450;
+    }
     .success {
       display: none;
       background-color: #4CAF50;
-      color: white; text-align: center;
+      color: white;
+      text-align: center;
       padding: 10px;
       border-radius: 5px;
       margin-top: 10px;
+      font-weight: 600;
     }
     input[type="text"] {
-      width: 100%; padding: 10px;
+      width: 100%;
+      padding: 10px;
       border-radius: 5px;
-      border: 1px solid #ccc;
+      border: 1px solid #102e58;
       font-size: 16px;
       text-align: center;
       margin-top: 5px;
+      color: #102e58;
+      font-weight: bold;
+      background: #f2f2f2;
+      box-sizing: border-box;
     }
     ul, p {
       font-size: 14px;
       margin-top: 10px;
-      color: #333;
+      color: #102e58;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" alt="CapitaLand Logo">
+  <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" alt="Logo CapitaLand Investment">
 </header>
 
 <div class="container">
@@ -105,12 +129,12 @@
     <div class="success" id="copy-amount-success">✅ Jumlah transfer berhasil disalin</div>
   </div>
 
-  <a href="https://platform00.com/index/my/index" class="btn">Saya sudah membayarkannya</a>
+  <a href="https://platform00.com/index/my/index" class="btn" target="_blank" rel="noopener">Saya sudah membayarkannya</a>
 
   <p><strong>Petunjuk：</strong></p>
   <ul>
     <li>Klik "Salin nomor rekening" lalu buka mobile banking atau ATM.</li>
-    <li>Ketik jumlah transfer di kolom, lalu klik salin untuk kirim ke mentor.</li>
+    <li>Ketik jumlah transfer di kolom, lalu klik salin untuk kirim ke mentor/guru.</li>
     <li>Jika halaman tidak menampilkan data, coba refresh atau buka ulang link.</li>
   </ul>
 </div>
@@ -120,7 +144,8 @@
     const el = document.getElementById(id);
     let text;
     if (id === 'amount') {
-      text = el.value.replace(/[^\d]/g, ''); // hanya ambil angka
+      // Salin tanpa format Rp dan titik
+      text = el.value.replace(/[^\d]/g, '');
     } else {
       text = el.innerText;
     }
@@ -133,30 +158,17 @@
     });
   }
 
-  // Format jumlah transfer saat diketik
-  function formatAmount(input) {
-    const raw = input.value.replace(/[^\d]/g, '');
-    const formatted = Number(raw).toLocaleString('id-ID', {
-      style: 'currency', currency: 'IDR', minimumFractionDigits: 0
-    });
-    input.value = formatted;
+  function formatAmount(el) {
+    // Hilangkan semua karakter kecuali angka
+    let val = el.value.replace(/[^\d]/g, '');
+    if (val === '') {
+      el.value = '';
+      return;
+    }
+    // Format dengan "Rp " dan ribuan dengan titik
+    el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
   }
 
-  // Ambil data dari URL
+  // Ambil data dari URL jika ada
   const url = new URL(window.location.href);
-  const params = url.searchParams;
-  const name = params.get('name');
-  const number = params.get('number');
-  const amount = params.get('amount');
-
-  if (name) document.getElementById('name').innerText = name;
-  if (number) document.getElementById('number').innerText = number;
-  if (amount) {
-    const el = document.getElementById('amount');
-    const clean = amount.replace(/[^\d]/g, '');
-    el.value = Number(clean).toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
-  }
-</script>
-
-</body>
-</html>
+  c
