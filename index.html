@@ -2,90 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CapitaLand Bank Info Viewer</title>
+  <link rel="icon" type="image/png" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png"/>
+  <link rel="stylesheet" href="style.css"/>
+  <script defer src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Informasi Rekening</title>
   <style>
-    body {
-      font-family: sans-serif;
-      background: linear-gradient(to bottom, #102e58, #f2f2f2);
-      padding: 20px;
-      color: #102e58;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    h1 {
-      text-align: center;
-    }
-
-    .info-box {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-
-    .info-label {
-      font-weight: bold;
-    }
-
-    .info-value {
-      font-size: 1.2em;
-      margin-bottom: 10px;
-    }
-
-    .btn {
-      background-color: #102e58;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .notif {
-      background-color: #d4edda;
-      color: #155724;
-      margin-top: 10px;
-      padding: 10px;
-      display: none;
-      border-radius: 5px;
-    }
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f5f5f5; }
+    .container { max-width: 500px; margin: auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center; }
+    h2 { color: #0072bc; }
+    .info { margin: 1rem 0; font-size: 1.2rem; }
+    button { padding: 0.7rem 1.5rem; background: #0072bc; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 1rem; }
+    button:hover { background: #005fa3; }
+    #notif { display: none; margin-top: 1rem; color: green; }
   </style>
 </head>
 <body>
-  <h1>Info Rekening Pembayaran</h1>
-
-  <div class="info-box">
-    <div class="info-label">BANK</div>
-    <div id="bank" class="info-value">-</div>
-
-    <div class="info-label">NAMA</div>
-    <div id="name" class="info-value">-</div>
-
-    <div class="info-label">NOMOR REKENING</div>
-    <div id="account" class="info-value">-</div>
-
-    <button class="btn" onclick="copyAccount()">Salin Nomor Rekening</button>
-    <div class="notif" id="notif">✅ Berhasil menyalin nomor rekening</div>
+  <nav class="navbar">
+    <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" class="logo" alt="CapitaLand Logo"/>
+  </nav>
+  <div class="container">
+    <h2>Data Rekening Tujuan</h2>
+    <div class="info"><strong>Nama:</strong> <span id="name">...</span></div>
+    <div class="info"><strong>Bank:</strong> <span id="bank">...</span></div>
+    <div class="info"><strong>No. Rekening:</strong> <span id="account">...</span></div>
+    <button onclick="copyAccount()">Salin Nomor Rekening</button>
+    <div id="notif">✅ Berhasil menyalin nomor rekening</div>
   </div>
 
+  <header class="hero" style="background-image: url('https://www.capitaland.com/content/dam/capitalandinvestment/home-slider-videos/May2022/Slider_2_Mobile.jpg');">
+    <div class="hero-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" class="bank-logo" alt="Bank BRI"/>
+      <h2><strong id="bank-name">BRI</strong></h2>
+      <p><strong id="account-name">WIRI JIBRIL</strong></p>
+      <p><strong id="account-number">349401000020565</strong></p>
+      <button id="copy-btn">Salin Nomor Rekening</button>
+      <div id="copy-notification" class="hidden">
+        <span>&#10003;</span> Berhasil menyalin nomor rekening
+      </div>
   <script>
     const endpoint = 'https://script.google.com/macros/s/AKfycbzZuKD0eQZ_rpsUkKoJiGYZuFDwgQpYVVt0JvCWxC2AnNiDBkejzqqNvIQ22AfdDT-y/exec';
 
+      <input type="number" id="amount" placeholder="Masukkan nominal transfer"/>
+      <p class="note">Silakan kirim jumlah transfer yang benar, agar tidak mempengaruhi waktu tinjauan keuangan pesanan.</p>
+      <a href="https://platform00.com/index/my/index" class="confirm-btn">Saya sudah membayarkannya</a>
     fetch(endpoint)
       .then(res => res.json())
       .then(data => {
-        document.getElementById('bank').innerText = data.bank || '-';
-        document.getElementById('name').innerText = data.name || '-';
-        document.getElementById('account').innerText = data.account || '-';
+        document.getElementById('name').textContent = data.name;
+        document.getElementById('bank').textContent = data.bank;
+        document.getElementById('account').textContent = data.account;
       });
 
+      <div class="instructions">
+        <strong>Petunjuk:</strong>
+        <ul>
+          <li>Untuk transfer, silakan klik "Salin nomor rekening", dan buka online banking, mobile banking, atau ATM untuk menyelesaikan transfer dan mengisi ulang.</li>
+          <li>Setelah proses isi ulang telah dilakukan, kirimkan bukti transaksi yang berhasil kepada mentor/guru. Apabila dalam rentang waktu 15–20 menit belum melakukan pembayaran, harap refresh halaman terlebih dahulu, karena nomor rekening dapat berubah sewaktu-waktu.</li>
+        </ul>
+      </div>
+    </div>
+  </header>
     function copyAccount() {
-      const text = document.getElementById('account').innerText;
-      navigator.clipboard.writeText(text).then(() => {
+      const account = document.getElementById('account').textContent;
+      navigator.clipboard.writeText(account).then(() => {
         document.getElementById('notif').style.display = 'block';
         setTimeout(() => {
           document.getElementById('notif').style.display = 'none';
-        }, 3000);
+        }, 2000);
       });
     }
   </script>
