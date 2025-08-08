@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Update Rekening</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #102e58;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    header img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    main {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      color: #102e58;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #102e58;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0b2040;
+    }
+    .status {
+      margin-top: 20px;
+      padding: 10px;
+      background: #d4edda;
+      color: #155724;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" alt="CapitaLand Logo">
+    <h2>Admin Panel</h2>
+  </header>
+  <main>
+    <h1>Update Rekening Bank</h1>
+    <label>Nama Bank</label>
+    <input type="text" id="bank" placeholder="Contoh: BRI">
+
+    <label>Nama Pemilik</label>
+    <input type="text" id="name" placeholder="Contoh: WIRI JIBRIL">
+
+    <label>Nomor Rekening</label>
+    <input type="text" id="number" placeholder="Contoh: 349401000020565">
+
+    <button onclick="updateData()">Update</button>
+    <div class="status" id="status">Berhasil memperbarui data rekening!</div>
+  </main>
+
+  <script>
+    const endpoint = "https://script.google.com/macros/s/AKfycbzT6goIff8W6_gkU_LImYwJJ2ztnpHpPBaMv3oTjjrq24PPHpbZJj0_o_FA2zfKaHpx/exec";
+
+    async function updateData() {
+      const bank = document.getElementById("bank").value;
+      const name = document.getElementById("name").value;
+      const number = document.getElementById("number").value;
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bank, name, number })
+      });
+
+      const statusBox = document.getElementById("status");
+      statusBox.style.display = "block";
+    }
+  </script>
+</body>
+</html>
