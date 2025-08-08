@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CapitaLand Bank Info Viewer</title>
+  <link rel="icon" type="image/png" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png"/>
+  <link rel="stylesheet" href="style.css"/>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" class="logo" alt="CapitaLand Logo"/>
+  </nav>
+
+  <header class="hero" style="background-image: url('https://www.capitaland.com/content/dam/capitalandinvestment/home-slider-videos/May2022/Slider_2_Mobile.jpg');">
+    <div class="hero-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" class="bank-logo" alt="Bank BRI"/>
+      <h2><strong id="bank-name">BRI</strong></h2>
+      <p><strong id="account-name">WIRI JIBRIL</strong></p>
+      <p><strong id="account-number">349401000020565</strong></p>
+      <button id="copy-btn">Salin Nomor Rekening</button>
+      <div id="copy-notification" class="hidden">
+        <span>&#10003;</span> Berhasil menyalin nomor rekening
+      </div>
+
+      <input type="number" id="amount" placeholder="Masukkan nominal transfer"/>
+      <p class="note">Silakan kirim jumlah transfer yang benar, agar tidak mempengaruhi waktu tinjauan keuangan pesanan.</p>
+      <a href="https://platform00.com/index/my/index" class="confirm-btn">Saya sudah membayarkannya</a>
+
+      <div class="instructions">
+        <strong>Petunjuk:</strong>
+        <ul>
+          <li>Untuk transfer, silakan klik "Salin nomor rekening", dan buka online banking, mobile banking, atau ATM untuk menyelesaikan transfer dan mengisi ulang.</li>
+          <li>Setelah proses isi ulang telah dilakukan, kirimkan bukti transaksi yang berhasil kepada mentor/guru. Apabila dalam rentang waktu 15–20 menit belum melakukan pembayaran, harap refresh halaman terlebih dahulu, karena nomor rekening dapat berubah sewaktu-waktu.</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+</body>
+</html>
