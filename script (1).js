@@ -1,4 +1,4 @@
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbzT6goIff8W6_gkU_LImYwJJ2ztnpHpPBaMv3oTjjrq24PPHpbZJj0_o_FA2zfKaHpx/exec";
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxb98I14uoAxAThYDXJwKMD8Y8aW-B8FROYlndmunR-mlmFrNjuqUqRBz8oliyz6hnt/exec";
 
 window.addEventListener("DOMContentLoaded", () => {
   fetch(GAS_ENDPOINT)
