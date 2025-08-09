@@ -7,7 +7,9 @@
   <link rel="icon" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" />
   <style>
     * {
-      margin: 0; padding: 0; box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
     body {
@@ -19,13 +21,26 @@
     }
     header {
       background-color: rgba(255, 255, 255, 0.95);
-      position: fixed; top: 0; left: 0; width: 100%;
-      z-index: 1000; padding: 10px 20px;
-      display: flex; justify-content: center; align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
     }
     header img {
       height: 40px;
+    }
+    #loading {
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 100px;
+      color: #102e58;
     }
     .container {
       max-width: 480px;
@@ -35,9 +50,11 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgb(16 46 88 / 0.3);
       color: #102e58;
+      display: none; /* awalnya disembunyikan */
     }
     .bank-logo {
-      display: block; margin: 20px auto;
+      display: block;
+      margin: 20px auto;
       width: 160px;
       height: auto;
     }
@@ -57,8 +74,10 @@
       color: #102e58;
     }
     .btn {
-      display: block; width: 100%;
-      padding: 10px; margin: 12px 0;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 12px 0;
       background-color: #102e58;
       color: #fff;
       border: none;
@@ -215,25 +234,24 @@
         }
 
         // Ambil parameter dari URL dan isi ke elemen
-  const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramName = urlParams.get('name');
+        const paramNumber = urlParams.get('number');
+        const paramAmount = urlParams.get('amount');
 
-  const paramName = urlParams.get('name');
-  const paramNumber = urlParams.get('number');
-  const paramAmount = urlParams.get('amount');
-
-  if(paramName) {
-    document.getElementById('name').innerText = paramName;
-  }
-  if(paramNumber) {
-    document.getElementById('number').innerText = paramNumber;
-  }
-  if(paramAmount) {
-    const amountInput = document.getElementById('amount');
-    const cleaned = paramAmount.replace(/[^\d]/g, '');
-    if(cleaned) {
-      amountInput.value = 'Rp ' + Number(cleaned).toLocaleString('id-ID');
-    }
-  }
+        if (paramName) {
+          document.getElementById('name').innerText = paramName;
+        }
+        if (paramNumber) {
+          document.getElementById('number').innerText = paramNumber;
+        }
+        if (paramAmount) {
+          const amountInput = document.getElementById('amount');
+          const cleaned = paramAmount.replace(/[^\d]/g, '');
+          if (cleaned) {
+            amountInput.value = 'Rp ' + Number(cleaned).toLocaleString('id-ID');
+          }
+        }
 
         document.getElementById('loading').style.display = 'none';
         document.getElementById('container').style.display = 'block';
