@@ -42,6 +42,20 @@
       margin-top: 100px;
       color: #102e58;
     }
+    /* Animasi loading spinner */
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #102e58;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     .container {
       max-width: 480px;
       margin: 40px auto 60px;
@@ -50,7 +64,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgb(16 46 88 / 0.3);
       color: #102e58;
-      display: none; /* awalnya disembunyikan */
+      display: none;
     }
     .bank-logo {
       display: block;
@@ -113,9 +127,7 @@
       color: #102e58;
       font-weight: bold;
       background: #f2f2f2;
-      box-sizing: border-box;
       display: inline-block;
-      vertical-align: middle;
     }
     .input-wrapper {
       display: flex;
@@ -138,10 +150,13 @@
   <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" alt="Logo CapitaLand Investment">
 </header>
 
-<div id="loading">Memuat data rekening...</div>
+<div id="loading">
+  <div class="spinner"></div>
+  Memuat data rekening...
+</div>
 
 <div class="container" id="container">
-  <img class="bank-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" alt="Logo Bank">
+  <img class="bank-logo" src="" alt="Logo Bank">
 
   <div class="rekening-info">
     <strong>Nama Rekening:</strong>
@@ -175,32 +190,21 @@
 
   function copyText(id) {
     const el = document.getElementById(id);
-    let text;
-    if (id === 'amount') {
-      text = el.value.replace(/[^\d]/g, '');
-    } else {
-      text = el.innerText;
-    }
+    let text = id === 'amount' ? el.value.replace(/[^\d]/g, '') : el.innerText;
     navigator.clipboard.writeText(text).then(() => {
       const notif = document.getElementById(`copy-${id}-success`);
       notif.style.display = 'block';
-      setTimeout(() => {
-        notif.style.display = 'none';
-      }, 3000);
+      setTimeout(() => notif.style.display = 'none', 3000);
     });
   }
 
   function formatAmount(el) {
     let val = el.value.replace(/[^\d]/g, '');
-    if (val === '') {
-      el.value = '';
-      return;
-    }
-    el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
+    el.value = val ? 'Rp ' + Number(val).toLocaleString('id-ID') : '';
   }
 
   function isNumberKey(evt) {
-    const charCode = (evt.which) ? evt.which : evt.keyCode;
+    const charCode = evt.which || evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       evt.preventDefault();
       return false;
@@ -208,58 +212,38 @@
     return true;
   }
 
+  function setBankLogo(bankName) {
+    const bankLogo = document.querySelector('.bank-logo');
+    const bank = (bankName || '').toLowerCase();
+    if (bank.includes('bri')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
+    else if (bank.includes('bca')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/330px-Bank_Central_Asia.svg.png";
+    else if (bank.includes('danamon')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Danamon.svg/330px-Danamon.svg.png";
+    else if (bank.includes('sinarmas')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Sinarmas-Logo.png/330px-Sinarmas-Logo.png";
+    else if (bank.includes('cimb')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/CIMB_Niaga_logo.svg/330px-CIMB_Niaga_logo.svg.png";
+    else if (bank.includes('mandiri')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/213px-Bank_Mandiri_logo_2016.svg.png";
+  }
+
   async function loadAccountData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramBank = urlParams.get('bank');
+    const paramName = urlParams.get('name');
+    const paramNumber = urlParams.get('number');
+    const paramAmount = urlParams.get('amount');
+
+    if (paramBank) setBankLogo(paramBank);
+
     try {
       const res = await fetch(API_URL);
       const json = await res.json();
-
       if (json.status === "sukses" && json.data) {
-        document.getElementById('name').innerText = json.data.name;
-        document.getElementById('number').innerText = json.data.number;
-
-        const bankLogo = document.querySelector('.bank-logo');
-        if (json.data.bank) {
-          const bank = json.data.bank.toLowerCase();
-          if (bank.includes('bri')) {
-            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
-          } else if (bank.includes('bca')) {
-            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/330px-Bank_Central_Asia.svg.png";
-          } else if (bank.includes('danamon')) {
-            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Danamon.svg/330px-Danamon.svg.png";
-          } else if (bank.includes('sinarmas')) {
-            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Sinarmas-Logo.png/330px-Sinarmas-Logo.png";
-          } else if (bank.includes('cimb')) {
-            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/CIMB_Niaga_logo.svg/330px-CIMB_Niaga_logo.svg.png";
-          } else if (bank.includes('mandiri')) {
-            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/213px-Bank_Mandiri_logo_2016.svg.png";
-        }
-      }
-
-        // Ambil parameter dari URL dan isi ke elemen
-        const urlParams = new URLSearchParams(window.location.search);
-        const paramName = urlParams.get('name');
-        const paramNumber = urlParams.get('number');
-        const paramAmount = urlParams.get('amount');
-
-        if (paramName) {
-          document.getElementById('name').innerText = paramName;
-        }
-        if (paramNumber) {
-          document.getElementById('number').innerText = paramNumber;
-        }
+        document.getElementById('name').innerText = paramName || json.data.name;
+        document.getElementById('number').innerText = paramNumber || json.data.number;
         if (paramAmount) {
-          const amountInput = document.getElementById('amount');
-          const cleaned = paramAmount.replace(/[^\d]/g, '');
-          if (cleaned) {
-            amountInput.value = 'Rp ' + Number(cleaned).toLocaleString('id-ID');
-          }
+          document.getElementById('amount').value = 'Rp ' + Number(paramAmount.replace(/[^\d]/g, '')).toLocaleString('id-ID');
         }
-
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('container').style.display = 'block';
-      } else {
-        document.getElementById('loading').innerText = 'Gagal memuat data rekening.';
       }
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('container').style.display = 'block';
     } catch (err) {
       console.error("Gagal memuat data rekening:", err);
       document.getElementById('loading').innerText = 'Terjadi kesalahan saat memuat data.';
