@@ -152,11 +152,12 @@
 </div>
 
 <script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbzOu-x4AWzlXooxv4pgdvi7rDywFSpFgkeobOQLlEBdZErJNpluPmpTSeDNT3heA58/exec";
+
   function copyText(id) {
     const el = document.getElementById(id);
     let text;
     if (id === 'amount') {
-      // Salin tanpa format Rp dan titik
       text = el.value.replace(/[^\d]/g, '');
     } else {
       text = el.innerText;
@@ -171,13 +172,11 @@
   }
 
   function formatAmount(el) {
-    // Hilangkan semua karakter kecuali angka
     let val = el.value.replace(/[^\d]/g, '');
     if (val === '') {
       el.value = '';
       return;
     }
-    // Format dengan "Rp " dan ribuan dengan titik
     el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
   }
 
@@ -190,26 +189,6 @@
     return true;
   }
 
-  // Ambil data dari URL jika ada
-  const url = new URL(window.location.href);
-  const params = url.searchParams;
-  const name = params.get('name');
-  const number = params.get('number');
-  const amount = params.get('amount');
-
-  if (name) document.getElementById('name').innerText = name;
-  if (number) document.getElementById('number').innerText = number;
-  if (amount) {
-    const el = document.getElementById('amount');
-    // Format amount sesuai aturan
-    let val = amount.replace(/[^\d]/g, '');
-    el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
-  }
-
-    // Ganti dengan URL Web App Google Apps Script kamu
-  const API_URL = "https://script.google.com/macros/s/AKfycbzOu-x4AWzlXooxv4pgdvi7rDywFSpFgkeobOQLlEBdZErJNpluPmpTSeDNT3heA58/exec";
-
-  // Fungsi ambil data rekening dari server
   async function loadAccountData() {
     try {
       const res = await fetch(API_URL);
@@ -219,26 +198,54 @@
         document.getElementById('name').innerText = json.data.name;
         document.getElementById('number').innerText = json.data.number;
 
-        // Ganti logo bank sesuai data bank (opsional)
         const bankLogo = document.querySelector('.bank-logo');
-        if (json.data.bank && json.data.bank.toLowerCase().includes('bri')) {
-          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
-        } else if (json.data.bank && json.data.bank.toLowerCase().includes('bca')) {
-          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/330px-Bank_Central_Asia.svg.png";
-        } else if (json.data.bank && json.data.bank.toLowerCase().includes('danamon')) {
-          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Danamon.svg/330px-Danamon.svg.png";
-        } else if (json.data.bank && json.data.bank.toLowerCase().includes('sinarmas')) {
-          bankLogo.src = "https://www.sinarmas.com/blog/wp-content/uploads/2016/10/cropped-sm-logo-2.png";
-          } else if (json.data.bank && json.data.bank.toLowerCase().includes('cimb')) {
-          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/CIMB_Niaga_logo.svg/330px-CIMB_Niaga_logo.svg.png";
+        if (json.data.bank) {
+          const bank = json.data.bank.toLowerCase();
+          if (bank.includes('bri')) {
+            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
+          } else if (bank.includes('bca')) {
+            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/330px-Bank_Central_Asia.svg.png";
+          } else if (bank.includes('danamon')) {
+            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Danamon.svg/330px-Danamon.svg.png";
+          } else if (bank.includes('sinarmas')) {
+            bankLogo.src = "https://www.sinarmas.com/blog/wp-content/uploads/2016/10/cropped-sm-logo-2.png";
+          } else if (bank.includes('cimb')) {
+            bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/CIMB_Niaga_logo.svg/330px-CIMB_Niaga_logo.svg.png";
+          }
         }
-      }
-    } catch (err) {
-      console.error("Gagal memuat data rekening:", err);
+
+        // Ambil parameter dari URL dan isi ke elemen
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const paramName = urlParams.get('name');
+  const paramNumber = urlParams.get('number');
+  const paramAmount = urlParams.get('amount');
+
+  if(paramName) {
+    document.getElementById('name').innerText = paramName;
+  }
+  if(paramNumber) {
+    document.getElementById('number').innerText = paramNumber;
+  }
+  if(paramAmount) {
+    const amountInput = document.getElementById('amount');
+    const cleaned = paramAmount.replace(/[^\d]/g, '');
+    if(cleaned) {
+      amountInput.value = 'Rp ' + Number(cleaned).toLocaleString('id-ID');
     }
   }
 
-  // Jalankan setelah halaman siap
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('container').style.display = 'block';
+      } else {
+        document.getElementById('loading').innerText = 'Gagal memuat data rekening.';
+      }
+    } catch (err) {
+      console.error("Gagal memuat data rekening:", err);
+      document.getElementById('loading').innerText = 'Terjadi kesalahan saat memuat data.';
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', loadAccountData);
 </script>
 
