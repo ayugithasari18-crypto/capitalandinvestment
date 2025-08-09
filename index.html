@@ -1,148 +1,145 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Transfer Pembayaran</title>
-  <link rel="icon" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-    body {
-      background: url('https://www.capitaland.com/content/dam/capitalandinvestment/home-slider-videos/May2022/Slider_2_Mobile.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #102e58;
-      padding-top: 80px;
-      min-height: 100vh;
-    }
-    header {
-      background-color: rgba(255, 255, 255, 0.95);
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-    }
-    header img {
-      height: 40px;
-    }
-    #loading {
-      text-align: center;
-      font-weight: bold;
-      font-size: 16px;
-      margin-top: 100px;
-      color: #102e58;
-    }
-    /* Animasi loading spinner */
-    .spinner {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #102e58;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .container {
-      max-width: 480px;
-      margin: 40px auto 60px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgb(16 46 88 / 0.3);
-      color: #102e58;
-      display: none;
-    }
-    .bank-logo {
-      display: block;
-      margin: 20px auto;
-      width: 160px;
-      height: auto;
-    }
-    .rekening-info {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .rekening-info strong {
-      display: block;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    #name, .rekening-number {
-      font-weight: bold;
-      font-size: 20px;
-      margin-top: 8px;
-      color: #102e58;
-    }
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin: 12px 0;
-      background-color: #102e58;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-      text-align: center;
-      text-decoration: none;
-    }
-    .btn:hover {
-      background-color: #0d2450;
-    }
-    .success {
-      display: none;
-      background-color: #4CAF50;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-      font-weight: 600;
-    }
-    input[type="text"] {
-      width: calc(100% - 110px);
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #102e58;
-      font-size: 16px;
-      text-align: center;
-      margin-top: 5px;
-      color: #102e58;
-      font-weight: bold;
-      background: #f2f2f2;
-      display: inline-block;
-    }
-    .input-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-    }
-    ul, p {
-      font-size: 14px;
-      margin-top: 10px;
-      color: #102e58;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Transfer Pembayaran</title>
+<link rel="icon" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" />
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  body {
+    background: url('https://www.capitaland.com/content/dam/capitalandinvestment/home-slider-videos/May2022/Slider_2_Mobile.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #102e58;
+    padding-top: 80px;
+    min-height: 100vh;
+  }
+  header {
+    background-color: rgba(255, 255, 255, 0.95);
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  header img { height: 40px; }
+
+  /* Loading overlay */
+  #loading {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(255,255,255,0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 2000;
+    font-weight: bold;
+    color: #102e58;
+    font-size: 18px;
+    text-align: center;
+  }
+  /* Spinner dengan efek gradien */
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #e0e0e0;
+    border-top: 5px solid #102e58;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  /* Fade in container */
+  .container {
+    max-width: 480px;
+    margin: 40px auto 60px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(16, 46, 88, 0.3);
+    color: #102e58;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+  }
+  .container.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .bank-logo {
+    display: block;
+    margin: 20px auto;
+    width: 160px;
+  }
+  .rekening-info { text-align: center; margin-bottom: 20px; }
+  .rekening-info strong { display: block; font-size: 16px; margin-top: 10px; }
+  #name, .rekening-number {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 8px;
+    color: #102e58;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 12px 0;
+    background-color: #102e58;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn:hover { background-color: #0d2450; }
+  .success {
+    display: none;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  input[type="text"] {
+    width: calc(100% - 110px);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #102e58;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 5px;
+    color: #102e58;
+    font-weight: bold;
+    background: #f2f2f2;
+  }
+  .input-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  ul, p { font-size: 14px; margin-top: 10px; color: #102e58; }
+</style>
 </head>
 <body>
 
@@ -157,7 +154,6 @@
 
 <div class="container" id="container">
   <img class="bank-logo" src="" alt="Logo Bank">
-
   <div class="rekening-info">
     <strong>Nama Rekening:</strong>
     <div id="name">-</div>
@@ -186,71 +182,72 @@
 </div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbzOu-x4AWzlXooxv4pgdvi7rDywFSpFgkeobOQLlEBdZErJNpluPmpTSeDNT3heA58/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzOu-x4AWzlXooxv4pgdvi7rDywFSpFgkeobOQLlEBdZErJNpluPmpTSeDNT3heA58/exec";
 
-  function copyText(id) {
-    const el = document.getElementById(id);
-    let text = id === 'amount' ? el.value.replace(/[^\d]/g, '') : el.innerText;
-    navigator.clipboard.writeText(text).then(() => {
-      const notif = document.getElementById(`copy-${id}-success`);
-      notif.style.display = 'block';
-      setTimeout(() => notif.style.display = 'none', 3000);
-    });
+function copyText(id) {
+  const el = document.getElementById(id);
+  let text = id === 'amount' ? el.value.replace(/[^\d]/g, '') : el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const notif = document.getElementById(`copy-${id}-success`);
+    notif.style.display = 'block';
+    setTimeout(() => notif.style.display = 'none', 3000);
+  });
+}
+
+function formatAmount(el) {
+  let val = el.value.replace(/[^\d]/g, '');
+  el.value = val ? 'Rp ' + Number(val).toLocaleString('id-ID') : '';
+}
+
+function isNumberKey(evt) {
+  const charCode = evt.which || evt.keyCode;
+  if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    evt.preventDefault();
+    return false;
   }
+  return true;
+}
 
-  function formatAmount(el) {
-    let val = el.value.replace(/[^\d]/g, '');
-    el.value = val ? 'Rp ' + Number(val).toLocaleString('id-ID') : '';
-  }
+function setBankLogo(bankName) {
+  const bankLogo = document.querySelector('.bank-logo');
+  const bank = (bankName || '').toLowerCase();
+  if (bank.includes('bri')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
+  else if (bank.includes('bca')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/330px-Bank_Central_Asia.svg.png";
+  else if (bank.includes('danamon')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Danamon.svg/330px-Danamon.svg.png";
+  else if (bank.includes('sinarmas')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Sinarmas-Logo.png/330px-Sinarmas-Logo.png";
+  else if (bank.includes('cimb')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/CIMB_Niaga_logo.svg/330px-CIMB_Niaga_logo.svg.png";
+  else if (bank.includes('mandiri')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/213px-Bank_Mandiri_logo_2016.svg.png";
+}
 
-  function isNumberKey(evt) {
-    const charCode = evt.which || evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      evt.preventDefault();
-      return false;
-    }
-    return true;
-  }
+async function loadAccountData() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramBank = urlParams.get('bank');
+  const paramName = urlParams.get('name');
+  const paramNumber = urlParams.get('number');
+  const paramAmount = urlParams.get('amount');
 
-  function setBankLogo(bankName) {
-    const bankLogo = document.querySelector('.bank-logo');
-    const bank = (bankName || '').toLowerCase();
-    if (bank.includes('bri')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
-    else if (bank.includes('bca')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/330px-Bank_Central_Asia.svg.png";
-    else if (bank.includes('danamon')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Danamon.svg/330px-Danamon.svg.png";
-    else if (bank.includes('sinarmas')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Sinarmas-Logo.png/330px-Sinarmas-Logo.png";
-    else if (bank.includes('cimb')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/CIMB_Niaga_logo.svg/330px-CIMB_Niaga_logo.svg.png";
-    else if (bank.includes('mandiri')) bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/213px-Bank_Mandiri_logo_2016.svg.png";
-  }
+  if (paramBank) setBankLogo(paramBank);
 
-  async function loadAccountData() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const paramBank = urlParams.get('bank');
-    const paramName = urlParams.get('name');
-    const paramNumber = urlParams.get('number');
-    const paramAmount = urlParams.get('amount');
-
-    if (paramBank) setBankLogo(paramBank);
-
-    try {
-      const res = await fetch(API_URL);
-      const json = await res.json();
-      if (json.status === "sukses" && json.data) {
-        document.getElementById('name').innerText = paramName || json.data.name;
-        document.getElementById('number').innerText = paramNumber || json.data.number;
-        if (paramAmount) {
-          document.getElementById('amount').value = 'Rp ' + Number(paramAmount.replace(/[^\d]/g, '')).toLocaleString('id-ID');
-        }
+  try {
+    const res = await fetch(API_URL);
+    const json = await res.json();
+    if (json.status === "sukses" && json.data) {
+      document.getElementById('name').innerText = paramName || json.data.name;
+      document.getElementById('number').innerText = paramNumber || json.data.number;
+      if (paramAmount) {
+        document.getElementById('amount').value = 'Rp ' + Number(paramAmount.replace(/[^\d]/g, '')).toLocaleString('id-ID');
       }
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('container').style.display = 'block';
-    } catch (err) {
-      console.error("Gagal memuat data rekening:", err);
-      document.getElementById('loading').innerText = 'Terjadi kesalahan saat memuat data.';
     }
+  } catch (err) {
+    console.error("Gagal memuat data rekening:", err);
+    document.getElementById('loading').innerText = 'Terjadi kesalahan saat memuat data.';
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('container').classList.add('show');
   }
+}
 
-  document.addEventListener('DOMContentLoaded', loadAccountData);
+document.addEventListener('DOMContentLoaded', loadAccountData);
 </script>
 
 </body>
