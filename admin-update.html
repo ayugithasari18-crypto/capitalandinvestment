@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Update Rekening</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            background: white;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #006f43; /* warna tema CapitaLand */
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 12px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            background: #006f43; /* hijau CapitaLand */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #004f30;
+        }
+        .status {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Update Data Rekening</h2>
+
+        <label for="nama">Nama Pemilik</label>
+        <input type="text" id="nama" placeholder="Masukkan nama pemilik" required>
+
+        <label for="nomor">Nomor Rekening</label>
+        <input type="text" id="nomor" placeholder="Masukkan nomor rekening" required>
+
+        <label for="bank">Nama Bank</label>
+        <input type="text" id="bank" placeholder="Masukkan nama bank" required>
+
+        <button onclick="updateData()">Simpan Data</button>
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+        const endpoint = "https://script.google.com/macros/s/AKfycbwh1FUnZBQ5uKVGWNRxFqe585EQ5svJKOll1O3EY128dOdNNF2oczXDVG-j8894kRZc/exec";
+
+        function updateData() {
+            const nama = document.getElementById("nama").value.trim();
+            const nomor = document.getElementById("nomor").value.trim();
+            const bank = document.getElementById("bank").value.trim();
+            const statusEl = document.getElementById("status");
+
+            if (!nama || !nomor || !bank) {
+                statusEl.innerHTML = "⚠️ Semua kolom wajib diisi!";
+                statusEl.style.color = "red";
+                return;
+            }
+
+            fetch(endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: nama,
+                    number: nomor,
+                    bank: bank
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "sukses") {
+                    statusEl.innerHTML = "✅ Data berhasil diperbarui!";
+                    statusEl.style.color = "green";
+                } else {
+                    statusEl.innerHTML = "❌ Gagal update: " + (data.message || "Cek koneksi & endpoint");
+                    statusEl.style.color = "red";
+                }
+            })
+            .catch(err => {
+                statusEl.innerHTML = "❌ Error: " + err.message;
+                statusEl.style.color = "red";
+            });
+        }
+    </script>
+</body>
+</html>
