@@ -1,118 +1,161 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Update Rekening</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 400px;
-            background: white;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #006f43; /* warna tema CapitaLand */
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 12px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 4px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        button {
-            margin-top: 15px;
-            width: 100%;
-            padding: 12px;
-            background: #006f43; /* hijau CapitaLand */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #004f30;
-        }
-        .status {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Rekening - CapitaLand</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background-color: #00694f;
+      padding: 15px;
+      color: white;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .container {
+      background: white;
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .bank-logo {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+    .rekening {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 10px 0;
+      font-family: monospace;
+    }
+    .nama {
+      font-size: 1em;
+      margin-bottom: 20px;
+      font-family: monospace;
+    }
+    .btn {
+      display: inline-block;
+      background: #00694f;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    .btn:hover {
+      background: #00563d;
+    }
+    .notif {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: green;
+      display: none;
+    }
+    .jumlah-transfer {
+      margin-top: 15px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 1em;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Update Data Rekening</h2>
 
-        <label for="nama">Nama Pemilik</label>
-        <input type="text" id="nama" placeholder="Masukkan nama pemilik" required>
+<header>CapitaLand</header>
 
-        <label for="nomor">Nomor Rekening</label>
-        <input type="text" id="nomor" placeholder="Masukkan nomor rekening" required>
+<div class="container">
+  <img src="" alt="Logo Bank" class="bank-logo">
+  <div class="rekening" id="number">-</div>
+  <button class="btn" onclick="copyToClipboard('number')">Salin Nomor Rekening</button>
+  
+  <div class="nama" id="name">-</div>
+  
+  <div class="jumlah-transfer">
+    <label>Jumlah Transfer (Rp):</label>
+    <input type="number" id="transferAmount" placeholder="Masukkan nominal">
+    <button class="btn" onclick="copyAmount()">Salin Nominal</button>
+  </div>
 
-        <label for="bank">Nama Bank</label>
-        <input type="text" id="bank" placeholder="Masukkan nama bank" required>
+  <div class="notif" id="notif"></div>
+</div>
 
-        <button onclick="updateData()">Simpan Data</button>
-        <div class="status" id="status"></div>
-    </div>
+<script>
+  // URL Web App Google Apps Script
+  const API_URL = "https://script.google.com/macros/s/AKfycbwh1FUnZBQ5uKVGWNRxFqe585EQ5svJKOll1O3EY128dOdNNF2oczXDVG-j8894kRZc/exec";
 
-    <script>
-        const endpoint = "https://script.google.com/macros/s/AKfycbzOu-x4AWzlXooxv4pgdvi7rDywFSpFgkeobOQLlEBdZErJNpluPmpTSeDNT3heA58/exec";
+  // Fungsi ambil data rekening dari server
+  async function loadAccountData() {
+    try {
+      const res = await fetch(API_URL);
+      const json = await res.json();
 
-        function updateData() {
-            const nama = document.getElementById("nama").value.trim();
-            const nomor = document.getElementById("nomor").value.trim();
-            const bank = document.getElementById("bank").value.trim();
-            const statusEl = document.getElementById("status");
+      if (json.status === "sukses" && json.data) {
+        document.getElementById('name').innerText = json.data.name;
+        document.getElementById('number').innerText = json.data.number;
 
-            if (!nama || !nomor || !bank) {
-                statusEl.innerHTML = "⚠️ Semua kolom wajib diisi!";
-                statusEl.style.color = "red";
-                return;
-            }
-
-            fetch(endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: nama,
-                    number: nomor,
-                    bank: bank
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === "sukses") {
-                    statusEl.innerHTML = "✅ Data berhasil diperbarui!";
-                    statusEl.style.color = "green";
-                } else {
-                    statusEl.innerHTML = "❌ Gagal update: " + (data.message || "Cek koneksi & endpoint");
-                    statusEl.style.color = "red";
-                }
-            })
-            .catch(err => {
-                statusEl.innerHTML = "❌ Error: " + err.message;
-                statusEl.style.color = "red";
-            });
+        // Ganti logo bank sesuai data bank
+        const bankLogo = document.querySelector('.bank-logo');
+        if (json.data.bank && json.data.bank.toLowerCase().includes('bri')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
+        } else if (json.data.bank && json.data.bank.toLowerCase().includes('bca')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/c/c5/BCA_logo.svg";
+        } else if (json.data.bank && json.data.bank.toLowerCase().includes('mandiri')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/9/9f/Bank_Mandiri_logo.svg";
+        } else {
+          bankLogo.src = "";
         }
-    </script>
+      }
+    } catch (err) {
+      console.error("Gagal memuat data rekening:", err);
+    }
+  }
+
+  // Fungsi salin teks
+  function copyToClipboard(elementId) {
+    const text = document.getElementById(elementId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      showNotif("Berhasil menyalin nomor rekening");
+    });
+  }
+
+  // Fungsi salin nominal tanpa "Rp"
+  function copyAmount() {
+    const amount = document.getElementById('transferAmount').value;
+    if (amount) {
+      navigator.clipboard.writeText(amount).then(() => {
+        showNotif("Berhasil menyalin jumlah transfer");
+      });
+    } else {
+      showNotif("Masukkan nominal terlebih dahulu", true);
+    }
+  }
+
+  // Tampilkan notifikasi
+  function showNotif(message, isError = false) {
+    const notif = document.getElementById('notif');
+    notif.innerText = message;
+    notif.style.color = isError ? "red" : "green";
+    notif.style.display = "block";
+    setTimeout(() => notif.style.display = "none", 2000);
+  }
+
+  // Load data saat halaman dibuka
+  document.addEventListener('DOMContentLoaded', loadAccountData);
+</script>
+
 </body>
 </html>
