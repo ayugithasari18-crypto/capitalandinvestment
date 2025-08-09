@@ -1,101 +1,213 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Rekening - CapitaLand</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transfer Pembayaran</title>
+  <link rel="icon" href="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" />
   <style>
-    body {
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
       font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    }
+    body {
+      background: url('https://www.capitaland.com/content/dam/capitalandinvestment/home-slider-videos/May2022/Slider_2_Mobile.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #102e58;
+      padding-top: 80px;
+      min-height: 100vh;
     }
     header {
-      background-color: #00694f;
-      padding: 15px;
-      color: white;
-      font-size: 1.5em;
-      font-weight: bold;
+      background-color: rgba(255, 255, 255, 0.95);
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 1000; padding: 10px 20px;
+      display: flex; justify-content: center; align-items: center;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    }
+    header img {
+      height: 40px;
     }
     .container {
-      background: white;
-      max-width: 400px;
-      margin: 30px auto;
-      padding: 20px;
+      max-width: 480px;
+      margin: 40px auto 60px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgb(16 46 88 / 0.3);
+      color: #102e58;
     }
     .bank-logo {
-      width: 80px;
-      margin-bottom: 10px;
+      display: block; margin: 20px auto;
+      width: 160px;
+      height: auto;
     }
-    .rekening {
-      font-size: 1.2em;
-      font-weight: bold;
-      margin: 10px 0;
-      font-family: monospace;
-    }
-    .nama {
-      font-size: 1em;
+    .rekening-info {
+      text-align: center;
       margin-bottom: 20px;
-      font-family: monospace;
+    }
+    .rekening-info strong {
+      display: block;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #name, .rekening-number {
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 8px;
+      color: #102e58;
     }
     .btn {
-      display: inline-block;
-      background: #00694f;
-      color: white;
-      padding: 10px 15px;
+      display: block; width: 100%;
+      padding: 10px; margin: 12px 0;
+      background-color: #102e58;
+      color: #fff;
+      border: none;
       border-radius: 5px;
-      text-decoration: none;
       cursor: pointer;
-      margin-top: 5px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      text-decoration: none;
     }
     .btn:hover {
-      background: #00563d;
+      background-color: #0d2450;
     }
-    .notif {
-      margin-top: 10px;
-      font-size: 0.9em;
-      color: green;
+    .success {
       display: none;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-weight: 600;
     }
-    .jumlah-transfer {
-      margin-top: 15px;
-    }
-    input[type="number"] {
-      width: 100%;
-      padding: 8px;
-      font-size: 1em;
+    input[type="text"] {
+      width: calc(100% - 110px);
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #102e58;
+      font-size: 16px;
+      text-align: center;
       margin-top: 5px;
+      color: #102e58;
+      font-weight: bold;
+      background: #f2f2f2;
       box-sizing: border-box;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .input-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    ul, p {
+      font-size: 14px;
+      margin-top: 10px;
+      color: #102e58;
     }
   </style>
 </head>
 <body>
 
-<header>CapitaLand</header>
+<header>
+  <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" alt="Logo CapitaLand Investment">
+</header>
 
 <div class="container">
-  <img src="" alt="Logo Bank" class="bank-logo">
-  <div class="rekening" id="number">-</div>
-  <button class="btn" onclick="copyToClipboard('number')">Salin Nomor Rekening</button>
-  
-  <div class="nama" id="name">-</div>
-  
-  <div class="jumlah-transfer">
-    <label>Jumlah Transfer (Rp):</label>
-    <input type="number" id="transferAmount" placeholder="Masukkan nominal">
-    <button class="btn" onclick="copyAmount()">Salin Nominal</button>
+  <img class="bank-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" alt="Logo Bank BRI">
+
+  <div class="rekening-info">
+    <strong>Nama Rekening:</strong>
+    <div id="name">-</div>
+
+    <strong>Nomor Rekening:</strong>
+    <div class="rekening-number" id="number">-</div>
+    <button class="btn" onclick="copyText('number')">Salin Nomor Rekening</button>
+    <div class="success" id="copy-number-success">✅ Nomor rekening berhasil disalin</div>
   </div>
 
-  <div class="notif" id="notif"></div>
+  <div class="rekening-info">
+    <strong>Jumlah Transfer (Rp):</strong>
+    <div class="input-wrapper">
+      <input type="text" id="amount" placeholder="Misal: 1500000" oninput="formatAmount(this)" onkeypress="return isNumberKey(event)">
+      <button class="btn" style="width: 100px; padding: 10px 0;" onclick="copyText('amount')">Salin</button>
+    </div>
+    <div class="success" id="copy-amount-success">✅ Jumlah transfer berhasil disalin</div>
+  </div>
+
+  <a href="https://capitalland26.com//index/my/index" class="btn" target="_blank" rel="noopener">Saya sudah membayarkannya</a>
+
+  <p><strong>Petunjuk：</strong></p>
+  <ul>
+    <li>Klik "Salin nomor rekening" lalu buka mobile banking atau ATM.</li>
+    <li>Ketik jumlah transfer di kolom, lalu klik salin untuk kirim ke mentor/guru.</li>
+    <li>Jika halaman tidak menampilkan data, coba refresh atau buka ulang link.</li>
+  </ul>
 </div>
 
 <script>
-  // URL Web App Google Apps Script
-  const API_URL = "https://script.google.com/macros/s/AKfycbwh1FUnZBQ5uKVGWNRxFqe585EQ5svJKOll1O3EY128dOdNNF2oczXDVG-j8894kRZc/exec";
+  function copyText(id) {
+    const el = document.getElementById(id);
+    let text;
+    if (id === 'amount') {
+      // Salin tanpa format Rp dan titik
+      text = el.value.replace(/[^\d]/g, '');
+    } else {
+      text = el.innerText;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      const notif = document.getElementById(`copy-${id}-success`);
+      notif.style.display = 'block';
+      setTimeout(() => {
+        notif.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  function formatAmount(el) {
+    // Hilangkan semua karakter kecuali angka
+    let val = el.value.replace(/[^\d]/g, '');
+    if (val === '') {
+      el.value = '';
+      return;
+    }
+    // Format dengan "Rp " dan ribuan dengan titik
+    el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
+  }
+
+  function isNumberKey(evt) {
+    const charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      evt.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  // Ambil data dari URL jika ada
+  const url = new URL(window.location.href);
+  const params = url.searchParams;
+  const name = params.get('name');
+  const number = params.get('number');
+  const amount = params.get('amount');
+
+  if (name) document.getElementById('name').innerText = name;
+  if (number) document.getElementById('number').innerText = number;
+  if (amount) {
+    const el = document.getElementById('amount');
+    // Format amount sesuai aturan
+    let val = amount.replace(/[^\d]/g, '');
+    el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
+  }
+
+    // Ganti dengan URL Web App Google Apps Script kamu
+  const API_URL = "https://script.google.com/macros/s/AKfycbzOu-x4AWzlXooxv4pgdvi7rDywFSpFgkeobOQLlEBdZErJNpluPmpTSeDNT3heA58/exec";
 
   // Fungsi ambil data rekening dari server
   async function loadAccountData() {
@@ -107,7 +219,7 @@
         document.getElementById('name').innerText = json.data.name;
         document.getElementById('number').innerText = json.data.number;
 
-        // Ganti logo bank sesuai data bank
+        // Ganti logo bank sesuai data bank (opsional)
         const bankLogo = document.querySelector('.bank-logo');
         if (json.data.bank && json.data.bank.toLowerCase().includes('bri')) {
           bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
@@ -115,8 +227,6 @@
           bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/c/c5/BCA_logo.svg";
         } else if (json.data.bank && json.data.bank.toLowerCase().includes('mandiri')) {
           bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/9/9f/Bank_Mandiri_logo.svg";
-        } else {
-          bankLogo.src = "";
         }
       }
     } catch (err) {
@@ -124,36 +234,7 @@
     }
   }
 
-  // Fungsi salin teks
-  function copyToClipboard(elementId) {
-    const text = document.getElementById(elementId).innerText;
-    navigator.clipboard.writeText(text).then(() => {
-      showNotif("Berhasil menyalin nomor rekening");
-    });
-  }
-
-  // Fungsi salin nominal tanpa "Rp"
-  function copyAmount() {
-    const amount = document.getElementById('transferAmount').value;
-    if (amount) {
-      navigator.clipboard.writeText(amount).then(() => {
-        showNotif("Berhasil menyalin jumlah transfer");
-      });
-    } else {
-      showNotif("Masukkan nominal terlebih dahulu", true);
-    }
-  }
-
-  // Tampilkan notifikasi
-  function showNotif(message, isError = false) {
-    const notif = document.getElementById('notif');
-    notif.innerText = message;
-    notif.style.color = isError ? "red" : "green";
-    notif.style.display = "block";
-    setTimeout(() => notif.style.display = "none", 2000);
-  }
-
-  // Load data saat halaman dibuka
+  // Jalankan setelah halaman siap
   document.addEventListener('DOMContentLoaded', loadAccountData);
 </script>
 
