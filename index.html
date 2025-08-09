@@ -130,6 +130,31 @@
       margin-top: 10px;
       color: #102e58;
     }
+      button:hover { background: #0d2240; }
+
+    /* Spinner Loading */
+    #loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 100px;
+        color: #102e58;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .spinner {
+        border: 6px solid rgba(16, 46, 88, 0.2);
+        border-top: 6px solid #102e58;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 12px;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -138,7 +163,11 @@
   <img src="https://www.capitaland.com/content/dam/capitalandinvestment/logos/Artboard%2027%402x.png" alt="Logo CapitaLand Investment">
 </header>
 
-<div id="loading">Memuat data rekening...</div>
+<!-- Spinner Loading -->
+<div id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Memuat data rekening...</div>
+</div>
 
 <div class="container" id="container">
   <img class="bank-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" alt="Logo Bank">
