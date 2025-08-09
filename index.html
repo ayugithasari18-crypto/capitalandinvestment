@@ -205,6 +205,37 @@
     let val = amount.replace(/[^\d]/g, '');
     el.value = 'Rp ' + Number(val).toLocaleString('id-ID');
   }
+
+    // Ganti dengan URL Web App Google Apps Script kamu
+  const API_URL = "https://script.google.com/macros/s/AKfycbzOu-x4AWzlXooxv4pgdvi7rDywFSpFgkeobOQLlEBdZErJNpluPmpTSeDNT3heA58/exec";
+
+  // Fungsi ambil data rekening dari server
+  async function loadAccountData() {
+    try {
+      const res = await fetch(API_URL);
+      const json = await res.json();
+
+      if (json.status === "sukses" && json.data) {
+        document.getElementById('name').innerText = json.data.name;
+        document.getElementById('number').innerText = json.data.number;
+
+        // Ganti logo bank sesuai data bank (opsional)
+        const bankLogo = document.querySelector('.bank-logo');
+        if (json.data.bank && json.data.bank.toLowerCase().includes('bri')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
+        } else if (json.data.bank && json.data.bank.toLowerCase().includes('bca')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/c/c5/BCA_logo.svg";
+        } else if (json.data.bank && json.data.bank.toLowerCase().includes('mandiri')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/9/9f/Bank_Mandiri_logo.svg";
+        }
+      }
+    } catch (err) {
+      console.error("Gagal memuat data rekening:", err);
+    }
+  }
+
+  // Jalankan setelah halaman siap
+  document.addEventListener('DOMContentLoaded', loadAccountData);
 </script>
 
 </body>
