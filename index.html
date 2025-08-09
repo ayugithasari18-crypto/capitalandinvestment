@@ -224,9 +224,13 @@
         if (json.data.bank && json.data.bank.toLowerCase().includes('bri')) {
           bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg";
         } else if (json.data.bank && json.data.bank.toLowerCase().includes('bca')) {
-          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/c/c5/BCA_logo.svg";
-        } else if (json.data.bank && json.data.bank.toLowerCase().includes('mandiri')) {
-          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/9/9f/Bank_Mandiri_logo.svg";
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/330px-Bank_Central_Asia.svg.png";
+        } else if (json.data.bank && json.data.bank.toLowerCase().includes('danamon')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Danamon.svg/330px-Danamon.svg.png";
+        } else if (json.data.bank && json.data.bank.toLowerCase().includes('sinarmas')) {
+          bankLogo.src = "https://www.sinarmas.com/blog/wp-content/uploads/2016/10/cropped-sm-logo-2.png";
+          } else if (json.data.bank && json.data.bank.toLowerCase().includes('cimb')) {
+          bankLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/CIMB_Niaga_logo.svg/330px-CIMB_Niaga_logo.svg.png";
         }
       }
     } catch (err) {
