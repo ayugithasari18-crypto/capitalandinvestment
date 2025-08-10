@@ -34,13 +34,29 @@
     }
     header img {
       height: 40px;
+      width: auto;
     }
     #loading {
-      text-align: center;
-      font-weight: bold;
-      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       margin-top: 100px;
       color: #ffffff;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .spinner {
+      border: 6px solid rgba(16, 46, 88, 0.2);
+      border-top: 6px solid #ffffff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     .container {
       max-width: 480px;
@@ -130,30 +146,8 @@
       margin-top: 10px;
       color: #102e58;
     }
-      button:hover { background: #10ae59; }
-
-    /* Spinner Loading */
-    #loading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 100px;
-        color: #ffffff;
-        font-weight: bold;
-        font-size: 16px;
-    }
-    .spinner {
-        border: 6px solid rgba(16, 46, 88, 0.2);
-        border-top: 6px solid #ffffff;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite;
-        margin-bottom: 12px;
-    }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    button:hover {
+      background: #10ae59;
     }
   </style>
 </head>
@@ -165,8 +159,8 @@
 
 <!-- Spinner Loading -->
 <div id="loading">
-    <div class="spinner"></div>
-    <div class="loading-text">Memuat data rekening...</div>
+  <div class="spinner"></div>
+  <div class="loading-text">Memuat data rekening...</div>
 </div>
 
 <div class="container" id="container">
